@@ -12,44 +12,60 @@ namespace Interview_Refactor1
 
             do
             {
+                int cntApples;
+                int lbsSugar;
+                int lbsFlour;
+
                 Console.WriteLine("How many apples do you have?");
-                var apples = Console.ReadLine();
+                if(!int.TryParse(Console.ReadLine(), out cntApples))
+                {
+                    Console.WriteLine("Please enter a number, let's try again from the top!");
+                    continue;
+                }
 
                 Console.WriteLine("How much sugar do you have?");
-                var sugar = Console.ReadLine();
+                if(!int.TryParse(Console.ReadLine(), out lbsSugar))
+                {
+                    Console.WriteLine("Please enter a number, let's try again from the top!");
+                    continue;
+                }
 
                 Console.WriteLine("How many pounds of flour do you have?");
-                var _PoundsOfflour = Console.ReadLine();
+                if(!int.TryParse(Console.ReadLine(), out lbsFlour))
+                {
+                    Console.WriteLine("Please enter a number, let's try again from the top!");
+                    continue;
+                }
 
                 Console.WriteLine("You can make:");
-                utility.Calc(apples, sugar, _PoundsOfflour);
+                utility.Calc(cntApples, lbsSugar, lbsFlour);
 
-                Console.WriteLine("\n\nEnter to calculate, 'q' to quit!");
-            } while (!string.Equals(Console.ReadLine(), "Q"));
+                Console.WriteLine("\n\nEnter to calculate again, or 'q' to quit!");
+            } while (!string.Equals(Console.ReadLine(), "Q", StringComparison.CurrentCultureIgnoreCase));
 
         }
     }
 
     public static class utility
     {
-        public static void Calc(string a, string b, string c)
+        public static void Calc(int cntApples, int lbsSugar, int lbsFlour)
         {
             try
             {
-                var maxApples = (int.Parse(a) / 3);
-                var x = int.Parse(b) / 2;
-                var _flourLeft =  int.Parse(c);
-                var maxPies = Math.Min(Math.Min(maxApples, x), _flourLeft);
+                int maxFromApples = (cntApples / 3);
+                int maxFromSugar = lbsSugar / 2;
+                int maxFromFlour =  lbsFlour;
+                var maxPies = Math.Min(Math.Min(maxFromApples, maxFromSugar), maxFromFlour);
                
                 Console.WriteLine(maxPies + " apple pies!");
 
-                var leftOverA = int.Parse(a) - (maxPies * 3);
-                var leftOverB = int.Parse(b) - (maxPies * 2);
-                var leftOverC = int.Parse(c) - maxPies;
+                var leftOverApples = cntApples - (maxPies * 3);
+                var leftOverSugar = lbsSugar - (maxPies * 2);
+                var leftOverFlour = lbsFlour - maxPies;
 
-                Console.WriteLine(leftOverA + " apple(s) left over, " + leftOverB + " lbs sugar left over, " + leftOverC + " lbs flour left over.");
+                Console.WriteLine($"You will have: {leftOverApples} apple(s) left over, {leftOverSugar} lbs sugar left over, and {leftOverFlour} lbs flour left over.");
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 Console.WriteLine("error");
             }
