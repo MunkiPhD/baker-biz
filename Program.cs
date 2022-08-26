@@ -1,75 +1,54 @@
 ﻿using System;
 
-namespace Interview_Refactor1
+namespace bakerbiz
 {
     class Program
     {
         static void Main(string[] args)
         {
-            // want to maximize the number of apple pies we can make.
-            // it takes 3 apples, 2 lbs of sugar and 1 pound of flour to make 1 apple pie
-            // this is intended to run on .NET Core
+            Dictionary<Ingredient_Type, Ingredient> allIngredients = new Dictionary<Ingredient_Type, Ingredient>() {
+                { Ingredient_Type.apple,    new Ingredient("apple",     "",     "How many apples do you have?") },
+                { Ingredient_Type.sugar,    new Ingredient("sugar",     "lbs",  "How many lbs of sugar do you have?") },
+                { Ingredient_Type.flour,    new Ingredient("flour",     "lbs",  "How many lbs of flour do you have?") },
+                { Ingredient_Type.cinnamon, new Ingredient("cinnamon",  "tsp",  "How many tsp of cinnamon do you have?") }
+            };
 
-            do
-            {
-                int cntApples;
-                int lbsSugar;
-                int lbsFlour;
+            Pantry mainPantry = new Pantry(allIngredients);
 
-                Console.WriteLine("How many apples do you have?");
-                if(!int.TryParse(Console.ReadLine(), out cntApples))
-                {
-                    Console.WriteLine("Please enter a number, let's try again from the top!");
-                    continue;
-                }
+            mainPantry.GatherIngredients();
 
-                Console.WriteLine("How much sugar do you have?");
-                if(!int.TryParse(Console.ReadLine(), out lbsSugar))
-                {
-                    Console.WriteLine("Please enter a number, let's try again from the top!");
-                    continue;
-                }
+            BakeCinnamonPies(mainPantry);
 
-                Console.WriteLine("How many pounds of flour do you have?");
-                if(!int.TryParse(Console.ReadLine(), out lbsFlour))
-                {
-                    Console.WriteLine("Please enter a number, let's try again from the top!");
-                    continue;
-                }
+            BakeBasicPies(mainPantry);
 
-                Console.WriteLine("You can make:");
-                utility.Calc(cntApples, lbsSugar, lbsFlour);
-
-                Console.WriteLine("\n\nEnter to calculate again, or 'q' to quit!");
-            } while (!string.Equals(Console.ReadLine(), "Q", StringComparison.CurrentCultureIgnoreCase));
+            mainPantry.ReportLeftOvers();
 
         }
-    }
 
-    public static class utility
-    {
-        public static void Calc(int cntApples, int lbsSugar, int lbsFlour)
+        private static void BakeCinnamonPies(Pantry pantry)
         {
-            try
-            {
-                int maxFromApples = (cntApples / 3);
-                int maxFromSugar = lbsSugar / 2;
-                int maxFromFlour =  lbsFlour;
-                var maxPies = Math.Min(Math.Min(maxFromApples, maxFromSugar), maxFromFlour);
-               
-                Console.WriteLine(maxPies + " apple pies!");
+            Dictionary<Ingredient_Type, int> cinnamonPieIngredients = new Dictionary<Ingredient_Type, int>() {
+                { Ingredient_Type.apple,    3 },
+                { Ingredient_Type.sugar,    2 },
+                { Ingredient_Type.flour,    1 },
+                { Ingredient_Type.cinnamon, 1 }
+            };
 
-                var leftOverApples = cntApples - (maxPies * 3);
-                var leftOverSugar = lbsSugar - (maxPies * 2);
-                var leftOverFlour = lbsFlour - maxPies;
+            Recipe cinnamonPieRecipe = new Recipe("Cinamon Apple", cinnamonPieIngredients);
+            cinnamonPieRecipe.Calc(pantry);
+            cinnamonPieRecipe.Report();
+        }
 
-                Console.WriteLine($"You will have: {leftOverApples} apple(s) left over, {leftOverSugar} lbs sugar left over, and {leftOverFlour} lbs flour left over.");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("error");
-            }
-
+        private static void BakeBasicPies(Pantry pantry)
+        {
+            Dictionary<Ingredient_Type, int> basicPieIngredients = new Dictionary<Ingredient_Type, int>() {
+                { Ingredient_Type.apple, 3 },
+                { Ingredient_Type.sugar, 2 },
+                { Ingredient_Type.flour, 1 }
+            };
+            Recipe basicPieRecipe = new Recipe("Apple", basicPieIngredients);
+            basicPieRecipe.Calc(pantry);
+            basicPieRecipe.Report();
         }
     }
 }
