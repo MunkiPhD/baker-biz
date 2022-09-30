@@ -3,10 +3,10 @@ namespace bakerbiz
     public class Recipe
     {
         private string pieName = "";
-        private Dictionary<Ingredient_Type, int> ingredientsRequired = new Dictionary<Ingredient_Type, int>();
+        private Dictionary<Ingredient_Type, double> ingredientsRequired = new Dictionary<Ingredient_Type, double>();
         private int maxPies = Int16.MaxValue;
 
-        public Recipe(string pname, Dictionary<Ingredient_Type, int> ingrdnts)
+        public Recipe(string pname, Dictionary<Ingredient_Type, double> ingrdnts)
         {
             pieName = pname;
             ingredientsRequired = ingrdnts;
@@ -23,7 +23,7 @@ namespace bakerbiz
         {
             foreach(var i in ingredientsRequired)
             {
-                int piesFromIngredient = pantry.GetAmmountRemaining(i.Key) / i.Value;
+                int piesFromIngredient = Convert.ToInt16(pantry.GetAmmountRemaining(i.Key) / i.Value);
                 maxPies = Math.Min(maxPies, piesFromIngredient);
             }
         }
@@ -32,7 +32,7 @@ namespace bakerbiz
         {
             foreach(var i in ingredientsRequired)
             {
-                pantry.UseIngredient(i.Key, maxPies * i.Value);
+                pantry.UseIngredient(i.Key, (maxPies * i.Value));
             }
         }
 

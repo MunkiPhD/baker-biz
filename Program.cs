@@ -7,10 +7,11 @@ namespace bakerbiz
         static void Main(string[] args)
         {
             Dictionary<Ingredient_Type, Ingredient> allIngredients = new Dictionary<Ingredient_Type, Ingredient>() {
-                { Ingredient_Type.apple,    new Ingredient("apple",     "",     "How many apples do you have?") },
-                { Ingredient_Type.sugar,    new Ingredient("sugar",     "lbs",  "How many lbs of sugar do you have?") },
-                { Ingredient_Type.flour,    new Ingredient("flour",     "lbs",  "How many lbs of flour do you have?") },
-                { Ingredient_Type.cinnamon, new Ingredient("cinnamon",  "tsp",  "How many tsp of cinnamon do you have?") }
+                { Ingredient_Type.apple,    new Ingredient("apple",     "",         "How many apples do you have?") },
+                { Ingredient_Type.sugar,    new Ingredient("sugar",     "lbs",      "How many lbs of sugar do you have?") },
+                { Ingredient_Type.flour,    new Ingredient("flour",     "lbs",      "How many lbs of flour do you have?") },
+                { Ingredient_Type.cinnamon, new Ingredient("cinnamon",  "tsp",      "How many tsp of cinnamon do you have?") },
+                { Ingredient_Type.butter,   new Ingredient("butter",    "sticks",   "How many sticks of butter do you have?") }
             };
 
             Pantry mainPantry = new Pantry(allIngredients);
@@ -27,11 +28,12 @@ namespace bakerbiz
 
         private static void BakeCinnamonPies(Pantry pantry)
         {
-            Dictionary<Ingredient_Type, int> cinnamonPieIngredients = new Dictionary<Ingredient_Type, int>() {
-                { Ingredient_Type.apple,    3 },
-                { Ingredient_Type.sugar,    2 },
-                { Ingredient_Type.flour,    1 },
-                { Ingredient_Type.cinnamon, 1 }
+            Dictionary<Ingredient_Type, double> cinnamonPieIngredients = new Dictionary<Ingredient_Type, double>() {
+                { Ingredient_Type.apple,    3.0 },
+                { Ingredient_Type.sugar,    2.0 },
+                { Ingredient_Type.flour,    1.0 },
+                { Ingredient_Type.cinnamon, 1.0 },
+                { Ingredient_Type.butter,   0.75}
             };
 
             Recipe cinnamonPieRecipe = new Recipe("Cinamon Apple", cinnamonPieIngredients);
@@ -41,10 +43,11 @@ namespace bakerbiz
 
         private static void BakeBasicPies(Pantry pantry)
         {
-            Dictionary<Ingredient_Type, int> basicPieIngredients = new Dictionary<Ingredient_Type, int>() {
-                { Ingredient_Type.apple, 3 },
-                { Ingredient_Type.sugar, 2 },
-                { Ingredient_Type.flour, 1 }
+            Dictionary<Ingredient_Type, double> basicPieIngredients = new Dictionary<Ingredient_Type, double>() {
+                { Ingredient_Type.apple,    3.0 },
+                { Ingredient_Type.sugar,    2.0 },
+                { Ingredient_Type.flour,    1.0 },
+                { Ingredient_Type.butter,   0.75}
             };
             Recipe basicPieRecipe = new Recipe("Apple", basicPieIngredients);
             basicPieRecipe.Calc(pantry);

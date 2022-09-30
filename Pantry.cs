@@ -7,6 +7,8 @@ namespace bakerbiz
         public Pantry(Dictionary<Ingredient_Type, Ingredient> ingrdnts)
         {
                 supplies = ingrdnts;
+
+                
         }
 
         public void GatherIngredients()
@@ -24,22 +26,24 @@ namespace bakerbiz
             }
         }
 
-        public int GetAmmountRemaining(Ingredient_Type ingredient_Type)
+        public double GetAmmountRemaining(Ingredient_Type ingredient_Type)
         {
             return supplies[ingredient_Type].AmountRemaining;
         }
 
-        public void UseIngredient(Ingredient_Type ingredient_Type, int amount)
+        public void UseIngredient(Ingredient_Type ingredient_Type, double amount)
         {
             supplies[ingredient_Type].AmountRemaining -= amount;
         }
 
         public void ReportLeftOvers()
         {
+            const int nameLength = -26;
+            const int countLength = 4;
             Console.WriteLine("You will have the following left over ingredients: ");
             foreach(var s in supplies)
             {
-                Console.WriteLine($"{s.Value.Name}:\t{s.Value.AmountRemaining}");
+                Console.WriteLine($"{s.Value.Name, nameLength}:{s.Value.AmountRemaining, countLength}");
             }
         }
     }

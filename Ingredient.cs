@@ -5,14 +5,15 @@ namespace bakerbiz
         apple,
         sugar,
         flour,
-        cinnamon
+        cinnamon,
+        butter
     }
 
     public class Ingredient
     {
         private readonly string gatherMessage;
         public string Name {get; set;}
-        public int AmountRemaining { get; set; }
+        public double AmountRemaining { get; set; }
         public string Units { get; set; }
         public string GatherMessage { get { return gatherMessage; } }
 
