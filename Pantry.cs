@@ -1,49 +1,41 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 namespace bakerbiz
 {
     public class Pantry
     {
-        Dictionary<Ingredient_Type, Ingredient> supplies = new Dictionary<Ingredient_Type, Ingredient>();
+        Dictionary<string, Ingredient> supplies = new Dictionary<string, Ingredient>();
 
-        public Pantry(Dictionary<Ingredient_Type, Ingredient> ingrdnts)
+        public Pantry(string ingrdnts)
         {
-                supplies = ingrdnts;
-
-                
-        }
-
-        public void GatherIngredients()
-        {
-            foreach (var i in supplies)
-            {
-                int cnt = 0;
-                Console.WriteLine(i.Value.GatherMessage);
-                if(!int.TryParse(Console.ReadLine(), out cnt))
+                string jsonString = File.ReadAllText(ingrdnts);
+                var options = new JsonSerializerOptions
                 {
-                    Console.WriteLine($"Please enter a number, looks like we're gonna use 0 for {i.Value.Name}!");
-                    continue;
-                }
-                supplies[i.Key].AmountRemaining = cnt;
-            }
+                    Converters =
+                    {
+                        new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
+                    }
+                };
+                supplies = JsonSerializer.Deserialize<Dictionary<string, Ingredient>>(jsonString, options) ?? new Dictionary<string, Ingredient>();
         }
 
-        public double GetAmmountRemaining(Ingredient_Type ingredient_Type)
+        public int GetAmountRemaining(string ingredient_Name)
         {
-            return supplies[ingredient_Type].AmountRemaining;
+            return supplies[ingredient_Name].Amount;
         }
 
-        public void UseIngredient(Ingredient_Type ingredient_Type, double amount)
+        public void UseIngredient(string ingredient_Name, int amount)
         {
-            supplies[ingredient_Type].AmountRemaining -= amount;
+            supplies[ingredient_Name].Amount -= amount;
         }
 
         public void ReportLeftOvers()
         {
-            const int nameLength = -26;
-            const int countLength = 4;
             Console.WriteLine("You will have the following left over ingredients: ");
             foreach(var s in supplies)
             {
-                Console.WriteLine($"{s.Value.Name, nameLength}:{s.Value.AmountRemaining, countLength}");
+                s.Value.ReportLeftOvers(s.Key);
             }
         }
     }

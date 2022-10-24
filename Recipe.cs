@@ -1,16 +1,16 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 namespace bakerbiz
 {
     public class Recipe
     {
-        private string pieName = "";
-        private Dictionary<Ingredient_Type, double> ingredientsRequired = new Dictionary<Ingredient_Type, double>();
         private int maxPies = Int16.MaxValue;
 
-        public Recipe(string pname, Dictionary<Ingredient_Type, double> ingrdnts)
-        {
-            pieName = pname;
-            ingredientsRequired = ingrdnts;
-        }
+        public string? Name {get; set;}
+        public Dictionary<string, int> Ingredients {get; set;} = new Dictionary<string, int>();
+
+        public Recipe() {}
 
         public void Calc(Pantry pantry)
         {
@@ -21,16 +21,17 @@ namespace bakerbiz
 
         private void CalcPieCounts(Pantry pantry)
         {
-            foreach(var i in ingredientsRequired)
+            foreach(var i in Ingredients)
             {
-                int piesFromIngredient = Convert.ToInt16(pantry.GetAmmountRemaining(i.Key) / i.Value);
+                double piesDouble = pantry.GetAmountRemaining(i.Key) / i.Value;
+                int piesFromIngredient = Convert.ToInt16(piesDouble);
                 maxPies = Math.Min(maxPies, piesFromIngredient);
             }
         }
 
         private void CalcLeftOvers(Pantry pantry)
         {
-            foreach(var i in ingredientsRequired)
+            foreach(var i in Ingredients)
             {
                 pantry.UseIngredient(i.Key, (maxPies * i.Value));
             }
@@ -38,7 +39,7 @@ namespace bakerbiz
 
         public void Report()
         {
-            Console.WriteLine($"You can make {maxPies} {pieName} pies.");
+            Console.WriteLine($"You can make {maxPies} {Name}(s).");
         }
     }
 }

@@ -1,57 +1,64 @@
 ﻿using System;
-
+using System.Text.Json;
+using System.Text.Json.Serialization;
 namespace bakerbiz
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Dictionary<Ingredient_Type, Ingredient> allIngredients = new Dictionary<Ingredient_Type, Ingredient>() {
-                { Ingredient_Type.apple,    new Ingredient("apple",     "",         "How many apples do you have?") },
-                { Ingredient_Type.sugar,    new Ingredient("sugar",     "lbs",      "How many lbs of sugar do you have?") },
-                { Ingredient_Type.flour,    new Ingredient("flour",     "lbs",      "How many lbs of flour do you have?") },
-                { Ingredient_Type.cinnamon, new Ingredient("cinnamon",  "tsp",      "How many tsp of cinnamon do you have?") },
-                { Ingredient_Type.butter,   new Ingredient("butter",    "sticks",   "How many sticks of butter do you have?") }
-            };
+            Pantry mainPantry = new Pantry("ingredients.json");
 
-            Pantry mainPantry = new Pantry(allIngredients);
+            IEnumerable<Recipe> recipeBook = LoadRecipes("recipes");
 
-            mainPantry.GatherIngredients();
-
-            BakeCinnamonPies(mainPantry);
-
-            BakeBasicPies(mainPantry);
+            foreach (var recipe in recipeBook)
+            {
+                recipe.Calc(mainPantry);
+                recipe.Report();
+            }
 
             mainPantry.ReportLeftOvers();
 
         }
 
-        private static void BakeCinnamonPies(Pantry pantry)
+        private static List<Recipe> LoadRecipes(string dir)
         {
-            Dictionary<Ingredient_Type, double> cinnamonPieIngredients = new Dictionary<Ingredient_Type, double>() {
-                { Ingredient_Type.apple,    3.0 },
-                { Ingredient_Type.sugar,    2.0 },
-                { Ingredient_Type.flour,    1.0 },
-                { Ingredient_Type.cinnamon, 1.0 },
-                { Ingredient_Type.butter,   0.75}
-            };
+            List<Recipe> recipeBook = new List<Recipe>();
 
-            Recipe cinnamonPieRecipe = new Recipe("Cinamon Apple", cinnamonPieIngredients);
-            cinnamonPieRecipe.Calc(pantry);
-            cinnamonPieRecipe.Report();
+            try
+            {
+                var recipeFiles = Directory.EnumerateFiles(dir, "*.rec", SearchOption.AllDirectories);
+
+                foreach (string recipe in recipeFiles)
+                {
+                    try
+                    {
+                        recipeBook.Add(LoadRecipe(recipe));
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"In file {recipe} error: {e.Message}");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return recipeBook;
         }
 
-        private static void BakeBasicPies(Pantry pantry)
+        private static Recipe LoadRecipe(string rec)
         {
-            Dictionary<Ingredient_Type, double> basicPieIngredients = new Dictionary<Ingredient_Type, double>() {
-                { Ingredient_Type.apple,    3.0 },
-                { Ingredient_Type.sugar,    2.0 },
-                { Ingredient_Type.flour,    1.0 },
-                { Ingredient_Type.butter,   0.75}
+            string jsonString = File.ReadAllText(rec);
+            var options = new JsonSerializerOptions
+            {
+                Converters =
+                {
+                    new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
+                }
             };
-            Recipe basicPieRecipe = new Recipe("Apple", basicPieIngredients);
-            basicPieRecipe.Calc(pantry);
-            basicPieRecipe.Report();
+            return JsonSerializer.Deserialize<Recipe>(jsonString, options) ?? new Recipe();
         }
     }
 }
