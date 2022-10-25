@@ -1,9 +1,10 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using baker_biz_interfaces;
 
 namespace bakerbiz
 {
-    public class Recipe
+    public class Recipe : IRecipe
     {
         private int maxPies = Int16.MaxValue;
 
@@ -12,14 +13,14 @@ namespace bakerbiz
 
         public Recipe() {}
 
-        public void Calc(Pantry pantry)
+        public void Calc(IPantry pantry)
         {
             CalcPieCounts(pantry);
 
             CalcLeftOvers(pantry);
         }
 
-        private void CalcPieCounts(Pantry pantry)
+        protected void CalcPieCounts(IPantry pantry)
         {
             foreach(var i in Ingredients)
             {
@@ -29,7 +30,7 @@ namespace bakerbiz
             }
         }
 
-        private void CalcLeftOvers(Pantry pantry)
+        protected void CalcLeftOvers(IPantry pantry)
         {
             foreach(var i in Ingredients)
             {
