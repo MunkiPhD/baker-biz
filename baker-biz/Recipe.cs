@@ -6,10 +6,10 @@ namespace bakerbiz
 {
     public class Recipe : IRecipe
     {
-        private int maxPies = Int16.MaxValue;
+        private uint maxPies = UInt16.MaxValue;
 
         public string? Name {get; set;}
-        public Dictionary<string, int> Ingredients {get; set;} = new Dictionary<string, int>();
+        public Dictionary<string, uint> Ingredients {get; set;} = new Dictionary<string, uint>();
 
         public Recipe() {}
 
@@ -25,7 +25,7 @@ namespace bakerbiz
             foreach(var i in Ingredients)
             {
                 double piesDouble = pantry.GetAmountRemaining(i.Key) / i.Value;
-                int piesFromIngredient = Convert.ToInt16(piesDouble);
+                uint piesFromIngredient = Convert.ToUInt16(piesDouble);
                 maxPies = Math.Min(maxPies, piesFromIngredient);
             }
         }

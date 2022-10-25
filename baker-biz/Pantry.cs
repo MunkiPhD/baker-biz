@@ -23,14 +23,17 @@ namespace bakerbiz
                 supplies = JsonSerializer.Deserialize<Dictionary<string, Ingredient>>(jsonString, options) ?? new Dictionary<string, Ingredient>();
         }
 
-        public int GetAmountRemaining(string ingredient_Name)
+        public uint GetAmountRemaining(string ingredient_Name)
         {
             return supplies[ingredient_Name].RecipeUnits;
         }
 
-        public void UseIngredient(string ingredient_Name, int amount)
+        public void UseIngredient(string ingredient_Name, uint amount)
         {
-            supplies[ingredient_Name].RecipeUnits -= amount;
+            checked
+            {
+                supplies[ingredient_Name].RecipeUnits -= amount;
+            }
         }
 
         public void ReportLeftOvers()

@@ -64,5 +64,11 @@ namespace baker_biz_tests
             supplies["blue"].RecipeUnits = 7;
             Assert.That(testPantry.GetAmountRemaining("blue"), Is.EqualTo(7));
         }
+
+        [Test]
+        public void UsingTooMuchOfAnIngredientThrowsAnException()
+        {
+            Assert.That(() => testPantry.UseIngredient("red", 300), Throws.Exception.TypeOf<OverflowException>());
+        }
     }
 }

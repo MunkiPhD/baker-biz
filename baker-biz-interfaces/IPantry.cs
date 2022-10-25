@@ -2,8 +2,8 @@
 {
     public interface IPantry
     {
-        public int GetAmountRemaining(string ingredient_Name);
-        public void UseIngredient(string ingredient_Name, int amount);
+        public uint GetAmountRemaining(string ingredient_Name);
+        public void UseIngredient(string ingredient_Name, uint amount);
         public void ReportLeftOvers();
     }
 }

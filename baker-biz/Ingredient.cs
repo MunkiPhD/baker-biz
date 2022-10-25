@@ -4,12 +4,12 @@ namespace bakerbiz
 {
     public class Ingredient
     {
-        public int RecipeUnits { get; set; }            // units used by a recipe
-        public int UnitConversion { get; set; } = 1;    // recipe units per pantry unit
+        public uint RecipeUnits { get; set; }            // units used by a recipe
+        public uint UnitConversion { get; set; } = 1;    // recipe units per pantry unit
         public double PantryUnits                       // Units input to the pantry and reported at the end
         {
             get => Convert.ToDouble(RecipeUnits) / Convert.ToDouble(UnitConversion);
-            set => RecipeUnits = Convert.ToInt16(value * UnitConversion); 
+            set => RecipeUnits = Convert.ToUInt16(value * UnitConversion); 
         }
         public string? PantryUnitDescription { get; set; }    // Name for the pantry units
 
