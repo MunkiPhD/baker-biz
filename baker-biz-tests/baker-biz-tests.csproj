@@ -22,4 +22,8 @@
     <ProjectReference Include="..\baker-biz\baker-biz.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Test Harness Classes\" />
+  </ItemGroup>
+
 </Project>
