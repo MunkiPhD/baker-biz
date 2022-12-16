@@ -2,7 +2,8 @@
 using baker_biz.Controllers;
 using baker_biz.Models;
 using baker_biz.Views;
-using baker_biz_interfaces;
+using baker_biz_interfaces.Controllers;
+using baker_biz_interfaces.Views;
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;

@@ -1,4 +1,4 @@
-namespace baker_biz_interfaces
+namespace baker_biz_interfaces.Controllers
 {
     public interface IRecipeController
     {
