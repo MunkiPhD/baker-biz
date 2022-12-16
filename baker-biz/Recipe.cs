@@ -9,38 +9,68 @@ namespace bakerbiz
         private uint maxPies = UInt16.MaxValue;
 
         public string? Name {get; set;}
-        public Dictionary<string, uint> Ingredients {get; set;} = new Dictionary<string, uint>();
-
+        public Dictionary<string, uint> Supplies {get; set;} = new Dictionary<string, uint>();
+        public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
         public Recipe() {}
 
-        public void Calc(IPantry pantry)
+        public void ProcessRecipe()
         {
-            CalcPieCounts(pantry);
-
-            CalcLeftOvers(pantry);
+            // Calculate the leftovers for this recipe
         }
 
-        protected void CalcPieCounts(IPantry pantry)
-        {
-            foreach(var i in Ingredients)
-            {
-                double piesDouble = pantry.GetAmountRemaining(i.Key) / i.Value;
-                uint piesFromIngredient = Convert.ToUInt16(piesDouble);
-                maxPies = Math.Min(maxPies, piesFromIngredient);
-            }
-        }
 
-        protected void CalcLeftOvers(IPantry pantry)
-        {
-            foreach(var i in Ingredients)
-            {
-                pantry.UseIngredient(i.Key, (maxPies * i.Value));
-            }
-        }
 
-        public void Report()
-        {
-            Console.WriteLine($"You can make {maxPies} {Name}(s).");
-        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //public void Calc(IPantry pantry)
+        //{
+        //    CalcPieCounts(pantry);
+
+        //    CalcLeftOvers(pantry);
+        //}
+
+        //protected void CalcPieCounts(IPantry pantry)
+        //{
+        //    foreach(var i in Ingredients)
+        //    {
+        //        double piesDouble = pantry.GetAmountRemaining(i.Key) / i.Value;
+        //        uint piesFromIngredient = Convert.ToUInt16(piesDouble);
+        //        maxPies = Math.Min(maxPies, piesFromIngredient);
+        //    }
+        //}
+
+        //protected void CalcLeftOvers(IPantry pantry)
+        //{
+        //    foreach(var i in Ingredients)
+        //    {
+        //        pantry.UseIngredient(i.Key, (maxPies * i.Value));
+        //    }
+        //}
+
+        //public void Report()
+        //{
+        //    Console.WriteLine($"You can make {maxPies} {Name}(s).");
+        //}
     }
 }

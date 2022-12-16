@@ -1,4 +1,6 @@
-﻿using System;
+﻿using baker_biz;
+using baker_biz_interfaces;
+using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 namespace bakerbiz
@@ -7,23 +9,25 @@ namespace bakerbiz
     {
         static void Main(string[] args)
         {
-            Pantry mainPantry = new Pantry("ingredients.json");
+            // Load Recipes
+            IEnumerable<IRecipe> recipeBook = LoadRecipes("recipes");
 
-            IEnumerable<Recipe> recipeBook = LoadRecipes("recipes");
+            IUserInterface ui = new CLI();
 
-            foreach (var recipe in recipeBook)
+            // Select which recipe to process
+            IRecipe? recipe = ui.SelectRecipe(recipeBook);
+
+            if (recipe != null)
             {
-                recipe.Calc(mainPantry);
-                recipe.Report();
+                // Process the recipe
+
+                // Report results of recipe calculation
             }
-
-            mainPantry.ReportLeftOvers();
-
         }
 
-        private static List<Recipe> LoadRecipes(string dir)
+        private static List<IRecipe> LoadRecipes(string dir)
         {
-            List<Recipe> recipeBook = new List<Recipe>();
+            List<IRecipe> recipeBook = new List<IRecipe>();
 
             try
             {
@@ -48,7 +52,7 @@ namespace bakerbiz
             return recipeBook;
         }
 
-        private static Recipe LoadRecipe(string rec)
+        private static IRecipe LoadRecipe(string rec)
         {
             string jsonString = File.ReadAllText(rec);
             var options = new JsonSerializerOptions
