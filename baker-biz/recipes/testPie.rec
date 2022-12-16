@@ -1,0 +1,32 @@
+{
+  "Name": "Test Pie",
+  "Ingredients": [
+    {
+      "Name": "apple",
+      "PantryUnits": "apples",
+      "RecipeUnits": "apples"
+    },
+    {
+      "Name": "sugar",
+      "PantryUnits": "lbs",
+      "RecipeUnits": "lbs"
+    },
+    {
+      "Name": "flour",
+      "PantryUnits": "lbs",
+      "RecipeUnits": "lbs"
+    },
+    {
+      "Name": "butter",
+      "PantryUnits": "sticks",
+      "RecipeUnits": "lbs",
+      "UnitConversion": 8
+    },
+    {
+      "Name": "cinnamon",
+      "PantryUnits": "tsp",
+      "RecipeUnits": "lbs",
+      "optional": true
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "Name": "Blueberry Cobbler",
+  "Ingredients": [
+    {
+      "Name": "blueberries",
+      "PantryUnits": "cups",
+      "RecipeUnits": "cups"
+    },
+
+    {
+      "Name": "lemon zest",
+      "PantryUnits": "lemons",
+      "RecipeUnits": "lemons"
+    },
+    {
+      "Name": "butter",
+      "PantryUnits": "sticks",
+      "RecipeUnits": "lbs",
+      "UnitConversion": 8
+    },
+    {
+      "Name": "flour",
+      "PantryUnits": "lbs",
+      "RecipeUnits": "lbs"
+    },
+    {
+      "Name": "sugar",
+      "PantryUnits": "lbs",
+      "RecipeUnits": "lbs"
+    },
+    {
+      "Name": "milk",
+      "PantryUnits": "cups",
+      "RecipeUnits": "cups"
+    },
+    {
+      "Name": "cinnamon",
+      "PantryUnits": "tsp",
+      "RecipeUnits": "lbs"
+    }
+  ]
+}
