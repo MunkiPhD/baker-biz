@@ -8,5 +8,6 @@ namespace baker_biz.Models
         public string RecipeUnits { get; set; } = "";   // Name for units used by a recipe
         public uint UnitConversion { get; set; } = 1;   // recipe units per pantry unit
         public string PantryUnits { get; set; } = "";   // Name for units input to the pantry and reported at the end
+        public uint Supply { get; set; } = 0;           // Volume of each ingredient, stored in recipe units
     }
 }

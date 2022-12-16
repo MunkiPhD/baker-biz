@@ -3,11 +3,11 @@ using System.Text.Json.Serialization;
 using baker_biz.Models;
 using baker_biz_interfaces;
 
-namespace bakerbiz
+namespace baker_biz.Controllers
 {
     public class RecipeController : IRecipeController
     {
-        private uint maxPies = UInt16.MaxValue;
+        private uint maxPies = ushort.MaxValue;
         internal RecipeModel Recipe { get; set; } = new RecipeModel();
 
         internal RecipeController(RecipeModel recipe)
