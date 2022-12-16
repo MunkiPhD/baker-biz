@@ -12,4 +12,13 @@
     <ProjectReference Include="..\baker-biz-interfaces\baker-biz-interfaces.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="recipes\applePie.rec">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="recipes\blueberryCobbler.rec">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
