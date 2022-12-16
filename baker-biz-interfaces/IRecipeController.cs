@@ -1,6 +1,6 @@
 namespace baker_biz_interfaces
 {
-    public interface IRecipe
+    public interface IRecipeController
     {
         void ProcessRecipe();
     }

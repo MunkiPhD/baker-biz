@@ -10,9 +10,9 @@ namespace baker_biz
 {
     internal class CLI : IUserInterface
     {
-        public IRecipe? SelectRecipe(IEnumerable<IRecipe> recipes)
+        public IRecipeController? SelectRecipe(IEnumerable<IRecipeController> recipes)
         {
-            Recipe? recipe = null;
+            RecipeController? recipe = null;
 
             if (recipes.Count() > 0)
             {
@@ -20,9 +20,9 @@ namespace baker_biz
                 Console.WriteLine("The following Items are available to calculate:");
 
                 int idx = 1;
-                foreach (Recipe rec in recipes)
+                foreach (RecipeController rec in recipes)
                 {
-                    Console.WriteLine($"{idx} - {rec.Name}");
+                    Console.WriteLine($"{idx} - {rec.Recipe.Name}");
                     idx++;
                 }
 
@@ -30,7 +30,7 @@ namespace baker_biz
                 bool selectionIsValid;
                 do
                 {
-                    Console.WriteLine("Enter the number for the Recipe you wish to calculate (Enter 'q' to quit):");
+                    Console.WriteLine("Enter the number for the RecipeController you wish to calculate (Enter 'q' to quit):");
 
                     string? response = Console.ReadLine();
 
@@ -48,11 +48,11 @@ namespace baker_biz
                     selectionIsValid = valueIsInt && valueIsInRange;
                 } while (!selectionIsValid);
 
-                recipe = recipes.ElementAt(idx - 1) as Recipe;
+                recipe = recipes.ElementAt(idx - 1) as RecipeController;
 
                 if (recipe != null)
                 {
-                    Console.WriteLine($"{recipe.Name} Selected, Processing Now...");
+                    Console.WriteLine($"{recipe.Recipe.Name} Selected, Processing Now...");
 
                     // Collect the availability of the Ingredients required by the selected recipe
                     CollectIngredients(recipe);
@@ -67,12 +67,12 @@ namespace baker_biz
             return recipe;
         }
 
-        private void CollectIngredients(IRecipe recipe)
+        private void CollectIngredients(IRecipeController recipe)
         {
 
         }
 
-        public void ReportCalculationResults(IRecipe recipe)
+        public void ReportCalculationResults(IRecipeController recipe)
         {
             throw new NotImplementedException();
             // Report Recipes possible with optional ingredients

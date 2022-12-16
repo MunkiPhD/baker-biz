@@ -8,7 +8,7 @@ namespace baker_biz_interfaces
 {
     public interface IUserInterface
     {
-        public IRecipe? SelectRecipe(IEnumerable<IRecipe> recipes);
-        public void ReportCalculationResults(IRecipe recipe);
+        public IRecipeController? SelectRecipe(IEnumerable<IRecipeController> recipes);
+        public void ReportCalculationResults(IRecipeController recipe);
     }
 }

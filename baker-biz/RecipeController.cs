@@ -1,17 +1,19 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using baker_biz.Models;
 using baker_biz_interfaces;
 
 namespace bakerbiz
 {
-    public class Recipe : IRecipe
+    public class RecipeController : IRecipeController
     {
         private uint maxPies = UInt16.MaxValue;
+        internal RecipeModel Recipe { get; set; } = new RecipeModel();
 
-        public string? Name {get; set;}
-        public Dictionary<string, uint> Supplies {get; set;} = new Dictionary<string, uint>();
-        public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
-        public Recipe() {}
+        internal RecipeController(RecipeModel recipe)
+        {
+            Recipe = recipe;
+        }
 
         public void ProcessRecipe()
         {

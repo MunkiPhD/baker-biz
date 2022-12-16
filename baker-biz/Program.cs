@@ -1,4 +1,5 @@
 ﻿using baker_biz;
+using baker_biz.Models;
 using baker_biz_interfaces;
 using System;
 using System.Text.Json;
@@ -10,12 +11,12 @@ namespace bakerbiz
         static void Main(string[] args)
         {
             // Load Recipes
-            IEnumerable<IRecipe> recipeBook = LoadRecipes("recipes");
+            IEnumerable<IRecipeController> recipeBook = LoadRecipes("recipes");
 
             IUserInterface ui = new CLI();
 
             // Select which recipe to process
-            IRecipe? recipe = ui.SelectRecipe(recipeBook);
+            IRecipeController? recipe = ui.SelectRecipe(recipeBook);
 
             if (recipe != null)
             {
@@ -25,9 +26,9 @@ namespace bakerbiz
             }
         }
 
-        private static List<IRecipe> LoadRecipes(string dir)
+        private static List<IRecipeController> LoadRecipes(string dir)
         {
-            List<IRecipe> recipeBook = new List<IRecipe>();
+            List<IRecipeController> recipeBook = new List<IRecipeController>();
 
             try
             {
@@ -52,7 +53,7 @@ namespace bakerbiz
             return recipeBook;
         }
 
-        private static IRecipe LoadRecipe(string rec)
+        private static IRecipeController LoadRecipe(string rec)
         {
             string jsonString = File.ReadAllText(rec);
             var options = new JsonSerializerOptions
@@ -62,7 +63,7 @@ namespace bakerbiz
                     new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
                 }
             };
-            return JsonSerializer.Deserialize<Recipe>(jsonString, options) ?? new Recipe();
+            return new RecipeController(JsonSerializer.Deserialize<RecipeModel>(jsonString, options) ?? new RecipeModel());
         }
     }
 }
