@@ -59,8 +59,15 @@ namespace baker_biz.Controllers
 
             foreach(var inactive in optionalIngredients)
             {
-                newVersion = $"{newVersion} {inactive},";
+                newVersion = $"{newVersion} {inactive.Name}";
+
+                if(inactive != optionalIngredients.Last())
+                {
+                    newVersion = $"{newVersion},";
+                }
             }
+
+            newVersion = $"{newVersion})";
 
             return newVersion;
         }

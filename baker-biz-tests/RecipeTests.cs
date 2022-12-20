@@ -54,8 +54,11 @@ namespace baker_biz_tests
                 }
             });
 
-            skyBlue.ProcessRecipe();
+            Dictionary<string, uint> results = skyBlue.ProcessRecipe();
+
             // We can make one serving from the test ingredients
+            Assert.That(results.Count(), Is.EqualTo(1));
+            Assert.That(results["Sky Blue"], Is.EqualTo(1));
 
             Dictionary<string, IIngredientModel> remainingIngredients = skyBlue.GetLeftovers();
 
@@ -68,6 +71,54 @@ namespace baker_biz_tests
             Assert.That(remainingIngredients["red"].PantrySupply,   Is.EqualTo(190));
             Assert.That(remainingIngredients["green"].PantrySupply, Is.EqualTo(30.25));
             Assert.That(remainingIngredients["blue"].PantrySupply, Is.EqualTo(5.5));
+        }
+
+        [Test]
+        public void RecipeHandlesOptionalIngredients()
+        {
+            RecipeController milk = new RecipeController(new RecipeModel()
+            {
+                Name = "Milk",
+                Ingredients = new List<IngredientModel>
+                {
+                    {
+                        new IngredientModel()
+                        {
+                            Name = "Milk",
+                            AmountRequired = 1,
+                            PantrySupply = 5,
+                            PantryUnits = "cup"
+                        }
+                    },
+                    {
+                        new IngredientModel
+                        {
+                            Name = "Chocolate",
+                            AmountRequired = 3,
+                            PantrySupply = 4,
+                            PantryUnits = "oz",
+                            Optional = true
+                        }
+                    }
+                }
+            });
+
+            Dictionary<string, uint> results = milk.ProcessRecipe();
+
+            // We can make 1 milks with chocolate, and 4 plain milks from the test ingredients
+            Assert.That(results.Count(), Is.EqualTo(2));
+            Assert.That(results["Milk"], Is.EqualTo(4));
+            Assert.That(results["Milk (With: Chocolate)"], Is.EqualTo(1));
+
+
+            Dictionary<string, IIngredientModel> remainingIngredients = milk.GetLeftovers();
+            // We will have no milk leftover and 2 chocolate leftover
+            Assert.That(remainingIngredients["Milk"].Supply, Is.EqualTo(0));
+            Assert.That(remainingIngredients["Chocolate"].Supply, Is.EqualTo(1));
+
+            // The same goes for the pantry supply of each
+            Assert.That(remainingIngredients["Milk"].PantrySupply, Is.EqualTo(0));
+            Assert.That(remainingIngredients["Chocolate"].PantrySupply, Is.EqualTo(1));
         }
     }
 }
