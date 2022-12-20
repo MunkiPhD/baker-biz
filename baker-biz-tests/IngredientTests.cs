@@ -1,4 +1,5 @@
-﻿using bakerbiz;
+﻿using baker_biz.Models;
+using bakerbiz;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,27 +13,27 @@ namespace baker_biz_tests
         [Test]
         public void PantryUnitsAreConvertedFromRecipeUnits()
         {
-            Ingredient salt = new Ingredient
+            IngredientModel salt = new IngredientModel
             {
-                RecipeUnits = 50,
-                UnitConversion = 10,
-                PantryUnitDescription = "Cartons"
+                Supply = 50,
+                UnitConversionConstant = 10,
+                PantryUnits = "Cartons"
             };
 
-            Assert.That(salt.PantryUnits, Is.EqualTo(5));
+            Assert.That(salt.PantrySupply, Is.EqualTo(5));
         }
 
         [Test]
         public void PantryUnitsAreConvertedToRecipeUnits()
         {
-            Ingredient salt = new Ingredient
+            IngredientModel salt = new IngredientModel
             {
-                UnitConversion = 10,
-                PantryUnits = 5,
-                PantryUnitDescription = "Cartons"
+                UnitConversionConstant = 10,
+                PantrySupply = 5,
+                PantryUnits = "Cartons"
             };
 
-            Assert.That(salt.RecipeUnits, Is.EqualTo(50));
+            Assert.That(salt.Supply, Is.EqualTo(50));
         }
     }
 }

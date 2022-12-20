@@ -1,4 +1,10 @@
-﻿using System;
+﻿using baker_biz;
+using baker_biz.Controllers;
+using baker_biz.Models;
+using baker_biz.Views;
+using baker_biz_interfaces.Controllers;
+using baker_biz_interfaces.Views;
+using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 namespace bakerbiz
@@ -7,23 +13,24 @@ namespace bakerbiz
     {
         static void Main(string[] args)
         {
-            Pantry mainPantry = new Pantry("ingredients.json");
+            // Load Recipes
+            IEnumerable<IRecipeController> recipeBook = LoadRecipes("recipes");
 
-            IEnumerable<Recipe> recipeBook = LoadRecipes("recipes");
+            IUserInterface ui = new CLI();
 
-            foreach (var recipe in recipeBook)
+            // Select which recipe to process
+            IRecipeController? recipe = ui.SelectRecipe(recipeBook);
+
+            if (recipe != null)
             {
-                recipe.Calc(mainPantry);
-                recipe.Report();
+                // Report results of recipe calculation
+                ui.ReportCalculationResults(recipe);
             }
-
-            mainPantry.ReportLeftOvers();
-
         }
 
-        private static List<Recipe> LoadRecipes(string dir)
+        private static List<IRecipeController> LoadRecipes(string dir)
         {
-            List<Recipe> recipeBook = new List<Recipe>();
+            List<IRecipeController> recipeBook = new List<IRecipeController>();
 
             try
             {
@@ -48,7 +55,7 @@ namespace bakerbiz
             return recipeBook;
         }
 
-        private static Recipe LoadRecipe(string rec)
+        private static IRecipeController LoadRecipe(string rec)
         {
             string jsonString = File.ReadAllText(rec);
             var options = new JsonSerializerOptions
@@ -58,7 +65,7 @@ namespace bakerbiz
                     new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
                 }
             };
-            return JsonSerializer.Deserialize<Recipe>(jsonString, options) ?? new Recipe();
+            return new RecipeController(JsonSerializer.Deserialize<RecipeModel>(jsonString, options) ?? new RecipeModel());
         }
     }
 }
