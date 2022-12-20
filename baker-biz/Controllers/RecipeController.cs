@@ -8,7 +8,7 @@ namespace baker_biz.Controllers
 {
     public class RecipeController : IRecipeController
     {
-        public  RecipeModel Recipe { get; set; } = new RecipeModel();
+        public RecipeModel Recipe { get; set; } = new RecipeModel();
 
         public RecipeController(RecipeModel recipe)
         {
@@ -57,11 +57,11 @@ namespace baker_biz.Controllers
 
             string newVersion = $"{recipeVersion} (With:";
 
-            foreach(var inactive in optionalIngredients)
+            foreach (var inactive in optionalIngredients)
             {
                 newVersion = $"{newVersion} {inactive.Name}";
 
-                if(inactive != optionalIngredients.Last())
+                if (inactive != optionalIngredients.Last())
                 {
                     newVersion = $"{newVersion},";
                 }
@@ -78,7 +78,7 @@ namespace baker_biz.Controllers
 
             foreach (var ingredient in activeIngredients)
             {
-                if(ingredient.Supply >= ingredient.AmountRequired)
+                if (ingredient.Supply >= ingredient.AmountRequired)
                 {
                     remainingIngredients.Add(ingredient);
                 }
@@ -89,7 +89,7 @@ namespace baker_biz.Controllers
 
         private void consumeIngredients(uint maxPies, IEnumerable<IngredientModel> ingredients)
         {
-            foreach(var ingredient in ingredients)
+            foreach (var ingredient in ingredients)
             {
                 ingredient.Supply -= ingredient.AmountRequired * maxPies;
             }
@@ -101,7 +101,7 @@ namespace baker_biz.Controllers
             // Find the minimum number of pies possible
             uint piesPossible = ushort.MaxValue;
 
-            foreach(var ingredient in activeIngredients)
+            foreach (var ingredient in activeIngredients)
             {
                 if (ingredient.AmountRequired > 0)
                 {
@@ -120,7 +120,7 @@ namespace baker_biz.Controllers
 
             foreach (var ingredient in ingredients)
             {
-                if(ingredient.Optional)
+                if (ingredient.Optional)
                 {
                     optionalIngredients.Add(ingredient);
                 }
@@ -137,67 +137,12 @@ namespace baker_biz.Controllers
         {
             Dictionary<string, IIngredientModel> leftovers = new Dictionary<string, IIngredientModel>();
 
-            foreach(var ingredient in Recipe.Ingredients)
+            foreach (var ingredient in Recipe.Ingredients)
             {
                 leftovers.Add(ingredient.Name, ingredient);
             }
 
             return leftovers;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //public void Calc(IPantry pantry)
-        //{
-        //    CalcPieCounts(pantry);
-
-        //    CalcLeftOvers(pantry);
-        //}
-
-        //protected void CalcPieCounts(IPantry pantry)
-        //{
-        //    foreach(var i in Ingredients)
-        //    {
-        //        double piesDouble = pantry.GetAmountRemaining(i.Key) / i.Value;
-        //        uint piesFromIngredient = Convert.ToUInt16(piesDouble);
-        //        maxPies = Math.Min(maxPies, piesFromIngredient);
-        //    }
-        //}
-
-        //protected void CalcLeftOvers(IPantry pantry)
-        //{
-        //    foreach(var i in Ingredients)
-        //    {
-        //        pantry.UseIngredient(i.Key, (maxPies * i.Value));
-        //    }
-        //}
-
-        //public void Report()
-        //{
-        //    Console.WriteLine($"You can make {maxPies} {Name}(s).");
-        //}
     }
 }
