@@ -1,85 +1,73 @@
 using bakerbiz;
-using baker_biz_interfaces;
+using baker_biz.Models;
+using baker_biz.Controllers;
+using baker_biz_interfaces.Controllers;
+using baker_biz_interfaces.Models;
 
 namespace baker_biz_tests
 {
     public class RecipeTests
     {
-        IPantry testPantry;
-
         [SetUp]
         public void Setup()
         {
-            testPantry = new TestHarnessPantry(new Dictionary<string, Ingredient>
-            {
-                { "red", new Ingredient {
-                        PantryUnits = 256,
-                        PantryUnitDescription = "red lights"
-                    } 
-                },
-                { "green", new Ingredient {
-                        UnitConversion = 4,
-                        PantryUnits = 64,
-                        PantryUnitDescription = "green lights"
-                    }
-                },
-                { "blue", new Ingredient {
-                        UnitConversion = 2,
-                        PantryUnits = 128,
-                        PantryUnitDescription = "blue lights"
-                    }
-                }
-            });
-        }
-
-        [Test]
-        public void ARecipeWithNoIngredientsWillUseNoSupplies()
-        {
-            Recipe noIngredients = new Recipe {
-                Name = "No Ingredients"
-            };
-
-            noIngredients.Calc(testPantry);
-
-            // Assert Recipe Units are correct
-            Assert.That(testPantry.GetAmountRemaining("red"), Is.EqualTo(256));
-            Assert.That(testPantry.GetAmountRemaining("green"), Is.EqualTo(256));
-            Assert.That(testPantry.GetAmountRemaining("blue"), Is.EqualTo(256));
-
-            // Assert that the Pantry Units are correct
-            var supplies = ((TestHarnessPantry)testPantry).GetSupplies();
-
-            Assert.That(supplies["red"].PantryUnits, Is.EqualTo(256));
-            Assert.That(supplies["green"].PantryUnits, Is.EqualTo(64));
-            Assert.That(supplies["blue"].PantryUnits, Is.EqualTo(128));
+            
         }
 
         [Test]
         public void RecipeUsesCorrectVolumesOfIngredients()
         {
-            Recipe skyBlue = new Recipe {
+            RecipeController skyBlue = new RecipeController(new RecipeModel()
+            {
                 Name = "Sky Blue",
-                Ingredients = {
-                    { "red", 66 },
-                    { "green", 135 },
-                    { "blue", 245 }
+                Ingredients = new List<IngredientModel>
+                {
+                    {
+                        new IngredientModel()
+                        {
+                            Name = "red",
+                            AmountRequired = 66,
+                            PantrySupply = 256,
+                            PantryUnits = "red lights"
+                        }
+                    },
+                    {
+                        new IngredientModel
+                        {
+                            Name = "green",
+                            UnitConversionConstant = 4,
+                            AmountRequired = 135,
+                            PantrySupply = 64,
+                            PantryUnits = "green lights"
+                        }
+                    },
+                    {
+                        new IngredientModel
+                        {
+                            Name = "blue",
+                            UnitConversionConstant = 2,
+                            AmountRequired = 245,
+                            PantrySupply = 128,
+                            PantryUnits = "blue lights"
+                        }
+                    }
                 }
-            };
+            });
 
-            skyBlue.Calc(testPantry);
+            skyBlue.ProcessRecipe();
             // We can make one serving from the test ingredients
 
-            // Assert Recipe Units are correct
-            Assert.That(testPantry.GetAmountRemaining("red"), Is.EqualTo(190));
-            Assert.That(testPantry.GetAmountRemaining("green"), Is.EqualTo(121));
-            Assert.That(testPantry.GetAmountRemaining("blue"), Is.EqualTo(11));
+            Dictionary<string, IIngredientModel> remainingIngredients = skyBlue.GetLeftovers();
+
+            // Assert RecipeController Units are correct
+            Assert.That(remainingIngredients["red"].Supply,     Is.EqualTo(190));
+            Assert.That(remainingIngredients["green"].Supply,   Is.EqualTo(121));
+            Assert.That(remainingIngredients["blue"].Supply,    Is.EqualTo(11));
 
             // Assert that the Pantry Units are correct
-            var supplies = ((TestHarnessPantry) testPantry).GetSupplies();
-
-            Assert.That(supplies["red"].PantryUnits, Is.EqualTo(190));
-            Assert.That(supplies["green"].PantryUnits, Is.EqualTo(30.25));
-            Assert.That(supplies["blue"].PantryUnits, Is.EqualTo(5.5));
+            Assert.That(remainingIngredients["red"].PantrySupply,   Is.EqualTo(190));
+            Assert.That(remainingIngredients["green"].PantrySupply, Is.EqualTo(30.25));
+            Assert.That(remainingIngredients["blue"].PantrySupply, Is.EqualTo(5.5));
         }
     }
 }
