@@ -4,28 +4,33 @@
     {
       "Name": "apple",
       "PantryUnits": "apples",
-      "RecipeUnits": "apples"
+      "RecipeUnits": "apples",
+      "Required": 3
     },
     {
       "Name": "sugar",
       "PantryUnits": "lbs",
-      "RecipeUnits": "lbs"
+      "RecipeUnits": "lbs",
+      "Required": 2
     },
     {
       "Name": "flour",
       "PantryUnits": "lbs",
-      "RecipeUnits": "lbs"
+      "RecipeUnits": "lbs",
+      "Required": 1
     },
     {
       "Name": "butter",
       "PantryUnits": "sticks",
       "RecipeUnits": "lbs",
-      "UnitConversion": 8
+      "UnitConversion": 8,
+      "Required": 6
     },
     {
       "Name": "cinnamon",
       "PantryUnits": "tsp",
       "RecipeUnits": "lbs",
+      "Required": 1,
       "optional": true
     }
   ]

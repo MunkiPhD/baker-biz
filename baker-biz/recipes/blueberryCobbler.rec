@@ -4,39 +4,46 @@
     {
       "Name": "blueberries",
       "PantryUnits": "cups",
-      "RecipeUnits": "cups"
+      "RecipeUnits": "cups",
+      "Required":  4
     },
 
     {
       "Name": "lemon zest",
       "PantryUnits": "lemons",
-      "RecipeUnits": "lemons"
+      "RecipeUnits": "lemons",
+      "Required":  1
     },
     {
       "Name": "butter",
       "PantryUnits": "sticks",
       "RecipeUnits": "lbs",
-      "UnitConversion": 8
+      "UnitConversion": 8,
+      "Required":  5
     },
     {
       "Name": "flour",
       "PantryUnits": "lbs",
-      "RecipeUnits": "lbs"
+      "RecipeUnits": "lbs",
+      "Required":  1
     },
     {
       "Name": "sugar",
       "PantryUnits": "lbs",
-      "RecipeUnits": "lbs"
+      "RecipeUnits": "lbs",
+      "Required":  1
     },
     {
       "Name": "milk",
       "PantryUnits": "cups",
-      "RecipeUnits": "cups"
+      "RecipeUnits": "cups",
+      "Required":  1
     },
     {
       "Name": "cinnamon",
       "PantryUnits": "tsp",
-      "RecipeUnits": "lbs"
+      "RecipeUnits": "lbs",
+      "Required":  1
     }
   ]
 }
