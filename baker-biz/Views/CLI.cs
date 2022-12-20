@@ -1,6 +1,7 @@
 ﻿using baker_biz.Controllers;
 using baker_biz.Models;
 using baker_biz_interfaces.Controllers;
+using baker_biz_interfaces.Models;
 using baker_biz_interfaces.Views;
 using bakerbiz;
 using System;
@@ -128,19 +129,49 @@ namespace baker_biz.Views
 
             foreach(IngredientModel ingredient in recipe.Recipe.Ingredients)
             {
-                var cursorPos = Console.GetCursorPosition();
-                Console.WriteLine($"{ingredient.Name}");
+                Console.Write($"{ingredient.Name}: ");
+                string? count = Console.ReadLine();
+
+                uint ingredientAmount;
+                if(uint.TryParse(count, out ingredientAmount))
+                {
+                    ingredient.PantrySupply = ingredientAmount;
+                }
             }
         }
 
         public void ReportCalculationResults(IRecipeController recipe)
         {
-            throw new NotImplementedException();
-            // Report Recipes possible with optional ingredients
+            // Process the recipe
+            Dictionary<string, uint> products = recipe.ProcessRecipe();
 
-            // Report Basic Recipes
+            // Report Recipes possible with optional ingredients
+            reportProducts(products);
 
             // Report leftover ingredients
+            reportLeftovers(recipe.GetLeftovers());
+        }
+
+        private void reportLeftovers(Dictionary<string, IIngredientModel> leftovers)
+        {
+            Console.WriteLine("You will have the following Ingredients Left Over:");
+
+            foreach(var ingredient in leftovers)
+            {
+                Console.WriteLine($"{ingredient.Key}: {ingredient.Value.PantrySupply} {ingredient.Value.PantryUnits}");
+            }
+        }
+
+        private void reportProducts(Dictionary<string, uint> products)
+        {
+            Console.Clear();
+
+            Console.WriteLine("You can create the following:");
+
+            foreach(var product in products)
+            {
+                Console.WriteLine($"{product.Key}: {product.Value}");
+            }
         }
     }
 }

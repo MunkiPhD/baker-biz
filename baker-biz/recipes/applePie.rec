@@ -23,8 +23,8 @@
       "Name": "butter",
       "PantryUnits": "sticks",
       "RecipeUnits": "lbs",
-      "UnitConversion": 8,
-      "AmountRequired":  6
+      "UnitConversionConstant": 8,
+      "AmountRequired": 6
     },
     {
       "Name": "cinnamon",

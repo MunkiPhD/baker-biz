@@ -23,9 +23,8 @@ namespace bakerbiz
 
             if (recipe != null)
             {
-                // Process the recipe
-
                 // Report results of recipe calculation
+                ui.ReportCalculationResults(recipe);
             }
         }
 

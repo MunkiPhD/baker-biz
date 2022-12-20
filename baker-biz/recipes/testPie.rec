@@ -23,7 +23,7 @@
       "Name": "butter",
       "PantryUnits": "sticks",
       "RecipeUnits": "lbs",
-      "UnitConversion": 8,
+      "UnitConversionConstant": 8,
       "AmountRequired": 6
     },
     {
