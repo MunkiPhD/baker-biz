@@ -120,5 +120,155 @@ namespace baker_biz_tests
             Assert.That(remainingIngredients["Milk"].PantrySupply, Is.EqualTo(0));
             Assert.That(remainingIngredients["Chocolate"].PantrySupply, Is.EqualTo(1));
         }
+
+        #region Validation Tests
+        [Test]
+        public void RecipesMustHaveAName()
+        {
+            RecipeController testRecipe = new RecipeController(new RecipeModel()
+            {
+                Name = "",
+                Ingredients = new List<IngredientModel>
+                {
+                    {
+                        new IngredientModel()
+                        {
+                            Name = "a",
+                            AmountRequired = 1,
+                            PantrySupply = 5,
+                            PantryUnits = "b"
+                        }
+                    }
+                }
+            });
+
+            List<string> errors = testRecipe.Validate();
+
+            Assert.That(errors.Contains("Recipes cannot have a null or empty name!"), Is.True);
+        }
+
+        [Test]
+        public void RecipesMustHaveAtLeastOneIngredient()
+        {
+            RecipeController testRecipe = new RecipeController(new RecipeModel()
+            {
+                Name = "No Ingredients"
+            });
+
+            List<string> errors = testRecipe.Validate();
+
+            Assert.That(errors.Contains("Recipes must have at least one ingredient!"), Is.True);
+        }
+
+        [Test]
+        public void IngredientsMustHaveAName()
+        {
+            RecipeController testRecipe = new RecipeController(new RecipeModel()
+            {
+                Name = "Ingredient without a name",
+                Ingredients = new List<IngredientModel>
+                {
+                    {
+                        new IngredientModel()
+                        {
+                            Name = "",
+                            AmountRequired = 1,
+                            PantrySupply = 5,
+                            PantryUnits = "b"
+                        }
+                    }
+                }
+            });
+
+            List<string> errors = testRecipe.Validate();
+
+            Assert.That(errors.Contains("Ingredients cannot have a null or empty name!"), Is.True);
+        }
+
+        [Test]
+        public void IngredientNamesMustBeUnique()
+        {
+            RecipeController testRecipe = new RecipeController(new RecipeModel()
+            {
+                Name = "Ingredient without a duplicate name",
+                Ingredients = new List<IngredientModel>
+                {
+                    {
+                        new IngredientModel()
+                        {
+                            Name = "a",
+                            AmountRequired = 1,
+                            PantrySupply = 5,
+                            PantryUnits = "b"
+                        }
+                    },
+                    {
+                        new IngredientModel()
+                        {
+                            Name = "a",
+                            AmountRequired = 1,
+                            PantrySupply = 5,
+                            PantryUnits = "b"
+                        }
+                    }
+                }
+            });
+
+            List<string> errors = testRecipe.Validate();
+
+            Assert.That(errors.Contains("a is already present in the ingredients list!"), Is.True);
+        }
+
+        [Test]
+        public void IngredientsConversionConstantCannotBeZero()
+        {
+            RecipeController testRecipe = new RecipeController(new RecipeModel()
+            {
+                Name = "Conversion Constant is 0",
+                Ingredients = new List<IngredientModel>
+                {
+                    {
+                        new IngredientModel()
+                        {
+                            Name = "a",
+                            AmountRequired = 1,
+                            PantrySupply = 5,
+                            PantryUnits = "b",
+                            UnitConversionConstant = 0
+                        }
+                    }
+                }
+            });
+
+            List<string> errors = testRecipe.Validate();
+
+            Assert.That(errors.Contains("a has a conversion constant of 0, this is invalid!"), Is.True);
+        }
+
+        [Test]
+        public void IngredientAmountRequiredCannotBeZero()
+        {
+            RecipeController testRecipe = new RecipeController(new RecipeModel()
+            {
+                Name = "Ingredient without a name",
+                Ingredients = new List<IngredientModel>
+                {
+                    {
+                        new IngredientModel()
+                        {
+                            Name = "a",
+                            AmountRequired = 0,
+                            PantrySupply = 5,
+                            PantryUnits = "b"
+                        }
+                    }
+                }
+            });
+
+            List<string> errors = testRecipe.Validate();
+
+            Assert.That(errors.Contains("a is a required ingredient that requires 0 units, this is invalid!"), Is.True);
+        }
+        #endregion
     }
 }

@@ -129,7 +129,8 @@ namespace baker_biz.Views
 
             foreach(IngredientModel ingredient in recipe.Recipe.Ingredients)
             {
-                Console.Write($"{ingredient.Name}: ");
+                Console.CursorVisible = true;
+                Console.Write($"{ingredient.Name} ({ingredient.PantryUnits}): ");
                 string? count = Console.ReadLine();
 
                 uint ingredientAmount;
@@ -142,6 +143,18 @@ namespace baker_biz.Views
 
         public void ReportCalculationResults(IRecipeController recipe)
         {
+            // Validate the recipe
+            List<string> errors = recipe.Validate();
+
+            if(errors.Any())
+            {
+
+                foreach(string error in errors)
+                {
+                    Console.WriteLine(error);
+                }
+            }
+
             // Process the recipe
             Dictionary<string, uint> products = recipe.ProcessRecipe();
 
@@ -171,6 +184,18 @@ namespace baker_biz.Views
             foreach(var product in products)
             {
                 Console.WriteLine($"{product.Key}: {product.Value}");
+            }
+        }
+
+        public void ReportErrors(IEnumerable<string> errors)
+        {
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.WriteLine("Erroneous Configuration detected, please fix it!");
+
+            Console.BackgroundColor = ConsoleColor.Black;
+            foreach(string error in errors)
+            {
+                Console.WriteLine(error);
             }
         }
     }

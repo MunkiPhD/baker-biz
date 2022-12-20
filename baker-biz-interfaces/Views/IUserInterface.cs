@@ -11,5 +11,6 @@ namespace baker_biz_interfaces.Views
     {
         public IRecipeController? SelectRecipe(IEnumerable<IRecipeController> recipes);
         public void ReportCalculationResults(IRecipeController recipe);
+        void ReportErrors(IEnumerable<string> allErrors);
     }
 }

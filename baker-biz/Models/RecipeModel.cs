@@ -8,7 +8,7 @@ namespace baker_biz.Models
 {
     public class RecipeModel
     {
-        public string Name { get; set; } = "Error: Name did not load!";
+        public string Name { get; set; } = "";
         public List<IngredientModel> Ingredients { get; set; } = new List<IngredientModel>();
     }
 }

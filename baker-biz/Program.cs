@@ -18,13 +18,31 @@ namespace bakerbiz
 
             IUserInterface ui = new CLI();
 
-            // Select which recipe to process
-            IRecipeController? recipe = ui.SelectRecipe(recipeBook);
-
-            if (recipe != null)
+            List<string> allErrors = new List<string>();
+            foreach (var rec in recipeBook)
             {
-                // Report results of recipe calculation
-                ui.ReportCalculationResults(recipe);
+                List<string> newErrors = rec.Validate();
+
+                if (newErrors.Any())
+                {
+                    allErrors.AddRange(newErrors);
+                }
+            }
+
+            if (!allErrors.Any())
+            {
+                // Select which recipe to process
+                IRecipeController? recipe = ui.SelectRecipe(recipeBook);
+
+                if (recipe != null)
+                {
+                    // Report results of recipe calculation
+                    ui.ReportCalculationResults(recipe);
+                }
+            }
+            else
+            {
+                ui.ReportErrors(allErrors);
             }
         }
 

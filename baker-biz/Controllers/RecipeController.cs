@@ -144,5 +144,65 @@ namespace baker_biz.Controllers
 
             return leftovers;
         }
+
+        public List<string> Validate()
+        {
+            List<string> errors = new List<string>();
+
+            // Recipes must have a name
+            if(string.IsNullOrEmpty(Recipe.Name))
+            {
+                errors.Add("Recipes cannot have a null or empty name!");
+            }
+
+            // Recipes must have at least one ingredient
+            if (Recipe.Ingredients.Any())
+            {
+                List<string> ingredientsErrors = validateIngredients();
+
+                if (ingredientsErrors.Any())
+                {
+                    errors.AddRange(ingredientsErrors);
+                }
+            }
+            else
+            {
+                errors.Add("Recipes must have at least one ingredient!");
+            }
+            return errors;
+        }
+
+        private List<string> validateIngredients()
+        {
+            List<string> errors = new List<string>();
+            foreach(var ingredient in Recipe.Ingredients)
+            {
+                // The name cannot be empty
+                if(string.IsNullOrEmpty(ingredient.Name))
+                {
+                    errors.Add("Ingredients cannot have a null or empty name!");
+                }
+
+                // The ingredient name cannot be a duplicate
+                if (Recipe.Ingredients.Select(i => i).Where(i => (i != ingredient) && (i.Name == ingredient.Name)).Any())
+                {
+                    errors.Add($"{ingredient.Name} is already present in the ingredients list!");
+                }
+
+                // The Conversion constant cannot be 0
+                if (ingredient.UnitConversionConstant == 0)
+                {
+                    errors.Add($"{ingredient.Name} has a conversion constant of 0, this is invalid!");
+                }
+
+                // Ingredients must require at least 1 unit to be used
+                if (ingredient.AmountRequired == 0)
+                {
+                    errors.Add($"{ingredient.Name} is a required ingredient that requires 0 units, this is invalid!");
+                }
+            }
+
+            return errors;
+        }
     }
 }

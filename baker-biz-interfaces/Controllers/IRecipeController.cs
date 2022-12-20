@@ -6,5 +6,6 @@ namespace baker_biz_interfaces.Controllers
     {
         Dictionary<string, uint> ProcessRecipe();
         Dictionary<string, IIngredientModel> GetLeftovers();
+        List<string> Validate();
     }
 }
